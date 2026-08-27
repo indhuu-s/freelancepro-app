@@ -1,0 +1,49 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Proposals - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">📋 My Proposals</h1>
+        
+        <div class="row">
+            {% if proposals %}
+                {% for proposal in proposals %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ proposal.job.title }}</h5>
+                                <p><strong>💰 Bid Amount:</strong> ${{ proposal.bid_amount }}</p>
+                                <p><strong>📅 Estimated Days:</strong> {{ proposal.estimated_days }} days</p>
+                                <p><strong>📌 Status:</strong> 
+                                    <span class="badge bg-{% if proposal.status == 'pending' %}warning{% elif proposal.status == 'accepted' %}success{% else %}danger{% endif %}">
+                                        {{ proposal.status }}
+                                    </span>
+                                </p>
+                                <p><strong>📝 Cover Letter:</strong> {{ proposal.cover_letter|truncatechars:100 }}</p>
+                                <a href="{% url 'job_detail' proposal.job.id %}" class="btn btn-primary btn-sm">View Job</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        You haven't submitted any proposals yet.
+                        <br>
+                        <a href="{% url 'job_list' %}" class="btn btn-primary mt-2">Browse Jobs</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">← Back to Home</a>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

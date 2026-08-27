@@ -1,0 +1,71 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post a Job - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">📝 Post a New Job</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Job Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g., Build a Django Website" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea name="description" class="form-control" rows="5" placeholder="Describe the job in detail..." required></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Budget Min ($)</label>
+                                        <input type="number" name="budget_min" class="form-control" placeholder="500" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Budget Max ($)</label>
+                                        <input type="number" name="budget_max" class="form-control" placeholder="1000" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Deadline</label>
+                                <input type="date" name="deadline" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Skills Required</label>
+                                <input type="text" name="skills" class="form-control" placeholder="Python, Django, React" value="Python, Django">
+                                <small class="text-muted">Separate skills with commas</small>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">🚀 Post Job</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{% url 'job_list' %}" class="btn btn-secondary">← Back to Jobs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% bootstrap_javascript %}
+</body>
+</html>

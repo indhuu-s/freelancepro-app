@@ -1,0 +1,50 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jobs - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">💼 Available Jobs</h1>
+        
+        <div class="row">
+            {% if jobs %}
+                {% for job in jobs %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ job.title }}</h5>
+                                <p class="card-text">{{ job.description|truncatechars:100 }}</p>
+                                <p><strong>💰 Budget:</strong> ${{ job.budget_min }} - ${{ job.budget_max }}</p>
+                                <p><strong>📅 Deadline:</strong> {{ job.deadline|date:"M d, Y" }}</p>
+                                <p><strong>📌 Status:</strong> 
+                                    <span class="badge bg-{% if job.status == 'open' %}success{% else %}secondary{% endif %}">
+                                        {{ job.status }}
+                                    </span>
+                                </p>
+                                <a href="{% url 'job_detail' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        No jobs available right now. Check back later!
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="text-center mt-4">
+            {% if user.is_authenticated and user.user_type == 'client' or user.user_type == 'both' %}
+                <a href="{% url 'post_job' %}" class="btn btn-success">➕ Post a Job</a>
+            {% endif %}
+            <a href="{% url 'home' %}" class="btn btn-secondary">← Back to Home</a>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">📊 Dashboard</h1>
+        
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5>📋 Active Projects</h5>
+                        <h2>{{ active_projects }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5>✅ Total Tasks</h5>
+                        <h2>{{ total_tasks }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <h5>👤 Logged in as</h5>
+                        <h6>{{ user.username }} ({{ user.user_type }})</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects as Client -->
+        {% if client_projects %}
+            <h3 class="mt-4">📂 Projects as Client</h3>
+            <div class="row">
+                {% for project in client_projects %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>{{ project.title }}</h5>
+                                <p><strong>Freelancer:</strong> {{ project.freelancer.username }}</p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge bg-{% if project.status == 'active' %}success{% else %}secondary{% endif %}">
+                                        {{ project.status }}
+                                    </span>
+                                </p>
+                                <p><strong>💰 Amount:</strong> ${{ project.total_amount }}</p>
+                                <a href="{% url 'project_detail' project.id %}" class="btn btn-primary btn-sm">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Projects as Freelancer -->
+        {% if freelancer_projects %}
+            <h3 class="mt-4">📂 Projects as Freelancer</h3>
+            <div class="row">
+                {% for project in freelancer_projects %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>{{ project.title }}</h5>
+                                <p><strong>Client:</strong> {{ project.client.username }}</p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge bg-{% if project.status == 'active' %}success{% else %}secondary{% endif %}">
+                                        {{ project.status }}
+                                    </span>
+                                </p>
+                                <p><strong>💰 Amount:</strong> ${{ project.total_amount }}</p>
+                                <a href="{% url 'project_detail' project.id %}" class="btn btn-primary btn-sm">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- No Projects -->
+        {% if not client_projects and not freelancer_projects %}
+            <div class="alert alert-info text-center">
+                <h4>No projects yet!</h4>
+                <p>Browse jobs or wait for someone to accept your proposal.</p>
+                <a href="{% url 'job_list' %}" class="btn btn-primary">Browse Jobs</a>
+            </div>
+        {% endif %}
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">← Back to Home</a>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

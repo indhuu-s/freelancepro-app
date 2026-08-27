@@ -1,0 +1,30 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">🚀 Welcome to FreelancePro</h1>
+        <p class="text-center">Your all-in-one freelance marketplace!</p>
+        
+        <div class="text-center mt-4">
+            {% if user.is_authenticated %}
+                <p>👋 Welcome, <strong>{{ user.username }}</strong>!</p>
+                <p>You are registered as: <strong>{{ user.user_type }}</strong></p>
+                <a href="/admin" class="btn btn-primary">Admin Panel</a>
+                <a href="{% url 'job_list' %}" class="btn btn-info">View Jobs</a>
+                <a href="{% url 'my_proposals' %}" class="btn btn-warning">My Proposals</a>
+                <a href="{% url 'dashboard' %}" class="btn btn-success">📊 Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

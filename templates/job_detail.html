@@ -1,0 +1,44 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ job.title }} - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>{{ job.title }}</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>📝 Description:</strong> {{ job.description }}</p>
+                <p><strong>💰 Budget:</strong> ${{ job.budget_min }} - ${{ job.budget_max }}</p>
+                <p><strong>📅 Deadline:</strong> {{ job.deadline|date:"M d, Y" }}</p>
+                <p><strong>📌 Status:</strong> 
+                    <span class="badge bg-{% if job.status == 'open' %}success{% else %}secondary{% endif %}">
+                        {{ job.status }}
+                    </span>
+                </p>
+                <p><strong>🛠 Skills Required:</strong> 
+                    {% for skill in job.skills_required %}
+                        <span class="badge bg-info">{{ skill }}</span>
+                    {% endfor %}
+                </p>
+                <p><strong>👤 Posted by:</strong> {{ job.client.username }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'job_list' %}" class="btn btn-secondary">← Back to Jobs</a>
+                
+                {% if user.is_authenticated and user.user_type == 'freelancer' or user.user_type == 'both' %}
+                    <a href="{% url 'submit_proposal' job.id %}" class="btn btn-success">📝 Submit Proposal</a>
+                {% endif %}
+                {% if user.is_authenticated and user == job.client %}
+                    <a href="{% url 'job_proposals' job.id %}" class="btn btn-info">📋 View Proposals</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

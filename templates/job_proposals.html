@@ -1,0 +1,49 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proposals for {{ job.title }} - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">📋 Proposals for: {{ job.title }}</h1>
+        
+        <div class="row">
+            {% if proposals %}
+                {% for proposal in proposals %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Freelancer: {{ proposal.freelancer.username }}</h5>
+                                <p><strong>💰 Bid Amount:</strong> ${{ proposal.bid_amount }}</p>
+                                <p><strong>📅 Estimated Days:</strong> {{ proposal.estimated_days }} days</p>
+                                <p><strong>📌 Status:</strong> 
+                                    <span class="badge bg-{% if proposal.status == 'pending' %}warning{% elif proposal.status == 'accepted' %}success{% else %}danger{% endif %}">
+                                        {{ proposal.status }}
+                                    </span>
+                                </p>
+                                <p><strong>📝 Cover Letter:</strong> {{ proposal.cover_letter }}</p>
+                                {% if proposal.status == 'pending' %}
+                                    <a href="{% url 'accept_proposal' proposal.id %}" class="btn btn-success btn-sm mt-2">✅ Accept Proposal</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        No proposals submitted for this job yet.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'job_detail' job.id %}" class="btn btn-secondary">← Back to Job</a>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

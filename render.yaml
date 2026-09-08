@@ -2,5 +2,17 @@ services:
   - type: web
     name: freelancepro
     env: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn freelancepro.wsgi:application"
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --no-input
+    startCommand: gunicorn freelancepro.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: freelancepro-db
+          property: connectionString
+    databases:
+      - name: freelancepro-db
+        databaseName: freelancepro_db
+        user: freelancepro_user

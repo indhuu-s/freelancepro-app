@@ -2,16 +2,5 @@ services:
   - type: web
     name: freelancepro
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn freelancepro.wsgi:application
-    envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: freelancepro.settings
-      - key: DATABASE_URL
-        fromDatabase:
-          name: freelancepro_db
-          property: connectionString
-    databases:
-      - name: freelancepro_db
-        databaseName: freelancepro_db
-        user: postgres
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn freelancepro.wsgi:application"

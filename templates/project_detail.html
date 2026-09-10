@@ -7,17 +7,19 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    
+
     <div class="container mt-5">
+        <!-- Project Info -->
         <div class="card">
             <div class="card-header">
                 <h1>📋 {{ project.title }}</h1>
-                <p><strong>Status:</strong> 
+                <p><strong>Status:</strong>
                     <span class="badge bg-{% if project.status == 'active' %}success{% else %}secondary{% endif %}">
                         {{ project.status }}
                     </span>
                 </p>
             </div>
+
             <div class="card-body">
                 <p><strong>📝 Description:</strong> {{ project.description }}</p>
                 <p><strong>💰 Total Amount:</strong> ${{ project.total_amount }}</p>
@@ -25,24 +27,27 @@
                 <p><strong>👤 Freelancer:</strong> {{ project.freelancer.username }}</p>
                 <p><strong>📅 Started:</strong> {{ project.start_date|date:"M d, Y" }}</p>
             </div>
+
+            <!-- ✅ FIXED PAYMENT BUTTON -->
             <div class="card-footer">
-                <!-- Debug Info (remove later) -->
-                <p>Debug: User = {{ user.username }}, Client = {{ project.client.username }}, Match = {{ user == project.client }}</p>
-                
-                {% if user == project.client %}
-                    <a href="{% url 'create_payment' project.id %}" class="btn btn-success">💰 Make Payment</a>
+                {% if user.id == project.client.id %}
+                    <a href="{% url 'create_payment' project.id %}" class="btn btn-success">
+                        💰 Make Payment
+                    </a>
                 {% else %}
                     <p class="text-muted">Only the client can make payments.</p>
                 {% endif %}
             </div>
         </div>
 
-        <!-- Tasks Section -->
+        <!-- Tasks -->
         <div class="card mt-4">
             <div class="card-header">
                 <h3>✅ Tasks</h3>
             </div>
             <div class="card-body">
+
+                <!-- Add Task -->
                 <form method="POST" class="mb-4">
                     {% csrf_token %}
                     <input type="hidden" name="add_task" value="1">
@@ -69,6 +74,7 @@
                     </div>
                 </form>
 
+                <!-- Task List -->
                 {% if tasks %}
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -110,6 +116,7 @@
             <a href="{% url 'dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
         </div>
     </div>
+
     {% bootstrap_javascript %}
 </body>
 </html>

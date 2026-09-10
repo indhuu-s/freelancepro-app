@@ -26,8 +26,13 @@
                 <p><strong>📅 Started:</strong> {{ project.start_date|date:"M d, Y" }}</p>
             </div>
             <div class="card-footer">
-                {% if user == project.client and project.status == 'active' %}
+                <!-- Debug Info (remove later) -->
+                <p>Debug: User = {{ user.username }}, Client = {{ project.client.username }}, Match = {{ user == project.client }}</p>
+                
+                {% if user == project.client %}
                     <a href="{% url 'create_payment' project.id %}" class="btn btn-success">💰 Make Payment</a>
+                {% else %}
+                    <p class="text-muted">Only the client can make payments.</p>
                 {% endif %}
             </div>
         </div>
@@ -38,7 +43,6 @@
                 <h3>✅ Tasks</h3>
             </div>
             <div class="card-body">
-                <!-- Add Task Form -->
                 <form method="POST" class="mb-4">
                     {% csrf_token %}
                     <input type="hidden" name="add_task" value="1">
@@ -65,7 +69,6 @@
                     </div>
                 </form>
 
-                <!-- Task List -->
                 {% if tasks %}
                     <div class="table-responsive">
                         <table class="table table-striped">

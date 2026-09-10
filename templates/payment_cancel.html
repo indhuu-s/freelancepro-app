@@ -1,0 +1,25 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Cancelled - FreelancePro</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h1 class="text-warning">❌ Payment Cancelled</h1>
+                        <p>Your payment was not processed.</p>
+                        <a href="{% url 'project_detail' project.id %}" class="btn btn-primary">Back to Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>

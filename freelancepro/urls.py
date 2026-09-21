@@ -7,6 +7,7 @@ from jobs import views as job_views
 from proposals import views as proposals_views
 from projects import views as projects_views
 from payments import views as payments_views 
+from chat import views as chat_views
 
 urlpatterns = [
     path('admin/', user_passes_test(lambda u: u.is_superuser)(admin.site.urls)),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('payments/create/<int:project_id>/', payments_views.create_checkout_session, name='create_payment'),
     path('payments/success/<int:project_id>/', payments_views.payment_success, name='payment_success'),
     path('payments/cancel/<int:project_id>/', payments_views.payment_cancel, name='payment_cancel'),
+    path('projects/<int:project_id>/chat/', chat_views.project_chat, name='project_chat'),
 ]
